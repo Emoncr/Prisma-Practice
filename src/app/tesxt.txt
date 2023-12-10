@@ -1,0 +1,146 @@
+    // ===========Answer of Question No 1==================//
+
+    // I will optimize image in next.js by useing Next.js <Image/> tag. Insted of using html <img /> tag if we used next.js  <Image/> tag next.js will optimize the image.
+    // Example:
+    <Image
+      src="/vercel.svg"
+      alt="Vercel Logo"
+      width={100}
+      height={24}
+      layout="responsive"
+    />
+
+
+
+
+
+      {/* //============ Answer of question no 2=====================//
+
+
+      // For makeing image vertical position to Horizontal position we can use css transform roate 
+    
+      //Example
+
+
+	step 1: created page.module.css file and import it on top as styles ,
+	step 2: added css transfrom property on css flie and make sure class named are in camelCases */}
+
+
+
+      {/* step 3: use the class name roateImage on image tag      */}
+      <img className={styles.roateImage} src="/images/vertical image 1.png" alt="" />
+
+      css in page.module.css
+      .roateImage {
+        transform: rotate(90deg);
+      }
+
+
+//=========== ==========Answer of question 3============= ========//
+
+//Example of home page -----//
+
+import Link from "next/link";
+
+export default function Home() {
+  return (
+
+    <div className="p-10">
+      <h2>I'm showing how to prevent access to that dashboard without login</h2>
+      <div className="mt-10">
+
+        <Link className="px-5 py-3 bg-amber-600" href="/dashboard" >Go to Dashboard</Link>
+      </div>
+    </div>
+
+  );
+}
+
+
+
+
+//=============Example of Dashboard layout
+
+import AuthProvider from '@/Components/AuthProvider'
+import React from 'react'
+
+const layout = ({ children }) => {
+    return (
+        <AuthProvider>
+            {children}
+        </AuthProvider>
+    )
+}
+
+export default layout
+
+
+
+
+
+//=======Example of Dashboard page
+
+import DashboardComponent from '@/Components/DashboardComponent'
+import React from 'react'
+
+const Dashboard = () => {
+    return (
+        <div>
+            <DashboardComponent/>
+        </div>
+    )
+}
+
+export default Dashboard
+
+
+
+
+
+
+//=========Authentication Component Code here
+"use client"
+
+import { isAuthenticated } from "@/utils/Authentication"
+import { redirect } from "next/navigation"
+import { useLayoutEffect } from "react"
+
+
+const AuthProvider = ({ children }) => {
+    useLayoutEffect(() => {
+        if (!isAuthenticated) {
+            redirect("/login")
+        }
+    }, [])
+
+    return (
+        <div>
+            <h1>This is from auth</h1>
+            {children}
+        </div>
+    )
+}
+
+export default AuthProvider
+
+
+//=======Imagine authentication mechanism in folder utils
+export const isAuthenticated = false;
+
+
+
+
+
+
+
+
+//======Dashboard Component codes
+
+const DashboardComponent = () => {
+    return (
+        <div>
+            <h1>This is dashboard</h1>
+        </div>
+    )
+}
+

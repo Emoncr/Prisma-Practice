@@ -51,11 +51,11 @@ model Profile {
 }
 
 model Comments {
-  id   Int    @id @default(autoincrement())
-  text String
-
+  id     Int    @id @default(autoincrement())
+  text   String
+  // Many to many
   postID Int
-  Post   Post @relation(fields: [postID], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  Post   Post   @relation(fields: [postID], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   userID Int
   User   User @relation(fields: [userID], references: [id], onDelete: Restrict, onUpdate: Cascade)

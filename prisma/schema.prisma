@@ -1,5 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// // This is your Prisma schema file,
+// // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
@@ -10,49 +10,53 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Creating one to one connection
 model User {
   id    Int    @id @default(autoincrement())
-  email String
-  name  String
+  email String @unique
 
-  profile Profile?
-
+  // ONE TO MANY RELATION
   post Post[]
 
-  comment Comment[]
+  // ONE TO ONE RELATION
+  profile Profile?
+
+  //MANY TO MANY RELATION
+  commnets Comments[]
+}
+
+model Post {
+  id          Int    @id @default(autoincrement())
+  title       String @db.VarChar(120)
+  description String @db.LongText
+
+  // ONE TO MANY
+  userID Int
+  User   User @relation(fields: [userID], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  // MANY TO MANY RELATIONS
+  comments Comments[]
 }
 
 model Profile {
   id Int @id @default(autoincrement())
 
-  city  String
-  state String
-  skill String
+  firstName String @db.VarChar(20)
+  lastName  String @db.VarChar(20)
+  phone     String @unique
+  city      String
 
-  userId Int  @unique
-  user   User @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  //ONE TO ONE
+  userID Int  @unique
+  User   User @relation(fields: [userID], references: [id], onDelete: Restrict, onUpdate: Cascade)
 }
 
-model Post {
-  id Int @id @default(autoincrement())
-
-  tittle String
-  desc   String
-
-  userId Int
-  user   User @relation(fields: [userId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-
-  commnet Comment[]
-}
-
-model Comment {
-  id          Int    @id @default(autoincrement())
-  commnetText String
+model Comments {
+  id   Int    @id @default(autoincrement())
+  text String
 
   postID Int
-  post   Post @relation(fields: [postID], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  Post   Post @relation(fields: [postID], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   userID Int
-  user   User @relation(fields: [userID], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  User   User @relation(fields: [userID], references: [id], onDelete: Restrict, onUpdate: Cascade)
 }

@@ -9,15 +9,7 @@ export async function POST(req, res) {
 
     const result = await prisma.User.create({
       data: {
-        email: "emohghgh@gmail.com",
-        profile: {
-          create: {
-            firstName: "demo first name",
-            lastName: "demo last name",
-            phone: "demo phonghge",
-            city: "dhaka bangladesh",
-          },
-        },
+        email: "eoh@gmail.com",
       },
     });
 

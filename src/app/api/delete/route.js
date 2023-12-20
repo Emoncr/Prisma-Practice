@@ -1,28 +1,19 @@
-import { PrismaClient } from "@prisma/client";
-import { NextResponse } from "next/server";
+const { PrismaClient } = require("@prisma/client");
+const { NextResponse } = require("next/server");
 
-export async function POST(req, res) {
+export const POST = async (req, res) => {
+  const { searchParams } = new URL(req.url);
+  const id = parseInt(searchParams.get("id"));
+  const reqBody = await req.json();
+
   try {
-    // const reqBody = await req.json();
-
     const prisma = new PrismaClient();
-
-    const result = await prisma.User.create({
-      data: {
-        email: "emohghgh@gmail.com",
-        profile: {
-          create: {
-            firstName: "demo first name",
-            lastName: "demo last name",
-            phone: "demo phonghge",
-            city: "dhaka bangladesh",
-          },
-        },
-      },
+    const result = await prisma.User.delete({
+      where: { id },
+   
     });
-
     return NextResponse.json({ status: "success", data: result });
   } catch (error) {
     return NextResponse.json(error);
   }
-}
+};
